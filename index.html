@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Journal Pro</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader">
+            <div class="loader-ring"></div>
+            <span class="loader-text">Trading Journal Pro</span>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="logo-text">Trading Journal Pro</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-page="dashboard">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="nav-item" data-page="journal">
+                        <i class="fas fa-book"></i>
+                        <span>Journal</span>
+                    </li>
+                    <li class="nav-item" data-page="analytics">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Analytics</span>
+                    </li>
+                    <li class="nav-item" data-page="statistics">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Statistics</span>
+                    </li>
+                    <li class="nav-item" data-page="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Trader</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title" id="page-title">Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <span class="current-date" id="current-date"></span>
+                    <button class="theme-btn" id="theme-btn" title="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Page: Dashboard -->
+            <section class="page active" id="page-dashboard">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Total Trade</span>
+                            <span class="stat-value" id="stat-total-trade">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Win Rate</span>
+                            <span class="stat-value" id="stat-win-rate">0%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Lose Rate</span>
+                            <span class="stat-value" id="stat-lose-rate">0%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Total Profit</span>
+                            <span class="stat-value profit" id="stat-total-profit">$0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Total Loss</span>
+                            <span class="stat-value loss" id="stat-total-loss">$0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon teal">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Net Profit</span>
+                            <span class="stat-value" id="stat-net-profit">$0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Average RR</span>
+                            <span class="stat-value" id="stat-avg-rr">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Profit Factor</span>
+                            <span class="stat-value" id="stat-profit-factor">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row 1 -->
+                <div class="charts-row">
+                    <div class="chart-card large">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-chart-area"></i> Equity Curve</h3>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="equity-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-chart-pie"></i> Win vs Loss</h3>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="winloss-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row 2 -->
+                <div class="charts-row">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-chart-bar"></i> Monthly Performance</h3>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="monthly-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-globe"></i> Trading Session</h3>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="session-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page: Journal -->
+            <section class="page" id="page-journal">
+                <div class="journal-header">
+                    <div class="journal-filters">
+                        <input type="text" id="search-trade" placeholder="Search trades..." class="filter-input">
+                        <select id="filter-pair" class="filter-select">
+                            <option value="">All Pairs</option>
+                            <option value="XAUUSD">XAUUSD</option>
+                            <option value="EURUSD">EURUSD</option>
+                            <option value="GBPUSD">GBPUSD</option>
+                            <option value="USDJPY">USDJPY</option>
+                            <option value="BTCUSD">BTCUSD</option>
+                            <option value="ETHUSD">ETHUSD</option>
+                        </select>
+                        <select id="filter-type" class="filter-select">
+                            <option value="">All Types</option>
+                            <option value="buy">Buy</option>
+                            <option value="sell">Sell</option>
+                        </select>
+                        <select id="filter-result" class="filter-select">
+                            <option value="">All Results</option>
+                            <option value="win">Win</option>
+                            <option value="loss">Loss</option>
+                        </select>
+                        <select id="filter-month" class="filter-select">
+                            <option value="">All Months</option>
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="btn-add-trade">
+                        <i class="fas fa-plus"></i> Add Trade
+                    </button>
+                </div>
+
+                <!-- Trade Table -->
+                <div class="table-container">
+                    <table class="trade-table" id="trade-table">
+                        <thead>
+                            <tr>
+                                <th>Screenshot</th>
+                                <th>Pair</th>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Entry</th>
+                                <th>Exit</th>
+                                <th>RR</th>
+                                <th>Profit</th>
+                                <th>Session</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trade-tbody">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-empty" id="table-empty" style="display:none;">
+                    <i class="fas fa-inbox"></i>
+                    <p>No trades found. Start adding your trades!</p>
+                </div>
+            </section>
+
+            <!-- Page: Analytics -->
+            <section class="page" id="page-analytics">
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <div class="analytics-icon green"><i class="fas fa-star"></i></div>
+                        <div class="analytics-info">
+                            <span class="analytics-label">Best Trade</span>
+                            <span class="analytics-value profit" id="ana-best-trade">$0</span>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="analytics-icon red"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="analytics-info">
+                            <span class="analytics-label">Worst Trade</span>
+                            <span class="analytics-value loss" id="ana-worst-trade">$0</span>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="analytics-icon green"><i class="fas fa-arrow-up"></i></div>
+                        <div class="analytics-info">
+                            <span class="analytics-label">Average Win</span>
+                            <span class="analytics-value profit" id="ana-avg-win">$0</span>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="analytics-icon red"><i class="fas fa-arrow-down"></i></div>
+                        <div class="analytics-info">
+                            <span class="analytics-label">Average Loss</span>
+                            <span class="analytics-value loss" id="ana-avg-loss">$0</span>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="analytics-icon teal"><i class="fas fa-fire"></i></div>
+                        <div class="analytics-info">
+                            <span class="analytics-label">Longest Win Streak</span>
+                            <span class="analytics-value" id="ana-win-streak">0</span>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="analytics-icon orange"><i class="fas fa-snowflake"></i></div>
+                        <div class="analytics-info">
+                            <span class="analytics-label">Longest Lose Streak</span>
+                            <span class="analytics-value" id="ana-lose-streak">0</span>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="analytics-icon purple"><i class="fas fa-shield-alt"></i></div>
+                        <div class="analytics-info">
+                            <span class="analytics-label">Total Risk</span>
+                            <span class="analytics-value" id="ana-total-risk">$0</span>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="analytics-icon blue"><i class="fas fa-gem"></i></div>
+                        <div class="analytics-info">
+                            <span class="analytics-label">Total Reward</span>
+                            <span class="analytics-value" id="ana-total-reward">$0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profit by Pair & Month -->
+                <div class="charts-row">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-coins"></i> Profit by Pair</h3>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="profit-pair-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-calendar-alt"></i> Profit by Month</h3>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="profit-month-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page: Statistics -->
+            <section class="page" id="page-statistics">
+                <div class="stats-detail-grid">
+                    <div class="stat-detail-card">
+                        <h3><i class="fas fa-chart-line"></i> Performance Over Time</h3>
+                        <canvas id="perf-time-chart"></canvas>
+                    </div>
+                    <div class="stat-detail-card">
+                        <h3><i class="fas fa-chart-bar"></i> Profit Distribution</h3>
+                        <canvas id="profit-dist-chart"></canvas>
+                    </div>
+                    <div class="stat-detail-card">
+                        <h3><i class="fas fa-chart-area"></i> Risk vs Reward</h3>
+                        <canvas id="risk-reward-chart"></canvas>
+                    </div>
+                    <div class="stat-detail-card">
+                        <h3><i class="fas fa-tags"></i> Setup Performance</h3>
+                        <canvas id="setup-chart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page: Settings -->
+            <section class="page" id="page-settings">
+                <div class="settings-container">
+                    <div class="settings-card">
+                        <h3><i class="fas fa-database"></i> Data Management</h3>
+                        <div class="settings-actions">
+                            <button class="btn btn-primary" id="btn-export">
+                                <i class="fas fa-download"></i> Export JSON
+                            </button>
+                            <button class="btn btn-secondary" id="btn-import">
+                                <i class="fas fa-upload"></i> Import JSON
+                            </button>
+                            <button class="btn btn-success" id="btn-backup">
+                                <i class="fas fa-cloud-download-alt"></i> Backup Data
+                            </button>
+                            <button class="btn btn-danger" id="btn-restore">
+                                <i class="fas fa-cloud-upload-alt"></i> Restore Data
+                            </button>
+                            <button class="btn btn-danger" id="btn-clear-all">
+                                <i class="fas fa-trash"></i> Clear All Data
+                            </button>
+                        </div>
+                        <input type="file" id="import-file" accept=".json" style="display:none;">
+                    </div>
+                    <div class="settings-card">
+                        <h3><i class="fas fa-palette"></i> Appearance</h3>
+                        <div class="setting-item">
+                            <span>Dark Mode</span>
+                            <label class="switch">
+                                <input type="checkbox" id="dark-mode-toggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <span>Default Pair</span>
+                            <select id="default-pair" class="filter-select">
+                                <option value="XAUUSD">XAUUSD</option>
+                                <option value="EURUSD">EURUSD</option>
+                                <option value="GBPUSD">GBPUSD</option>
+                                <option value="USDJPY">USDJPY</option>
+                                <option value="BTCUSD">BTCUSD</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <h3><i class="fas fa-info-circle"></i> About</h3>
+                        <p>Trading Journal Pro v1.0</p>
+                        <p>A premium trading journal for serious traders.</p>
+                        <p>Built with HTML, CSS, and Vanilla JavaScript.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal: Add/Edit Trade -->
+    <div class="modal-overlay" id="modal-trade">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modal-trade-title"><i class="fas fa-plus-circle"></i> Add New Trade</h2>
+                <button class="modal-close" id="modal-trade-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="trade-form" class="trade-form">
+                    <input type="hidden" id="trade-id">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Pair</label>
+                            <input type="text" id="trade-pair" value="XAUUSD" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="trade-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Time</label>
+                            <input type="time" id="trade-time" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select id="trade-type" required>
+                                <option value="buy">Buy</option>
+                                <option value="sell">Sell</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Entry Price</label>
+                            <input type="number" step="any" id="trade-entry" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Stop Loss</label>
+                            <input type="number" step="any" id="trade-sl" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Take Profit</label>
+                            <input type="number" step="any" id="trade-tp" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Exit Price</label>
+                            <input type="number" step="any" id="trade-exit" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Lot Size</label>
+                            <input type="number" step="0.01" id="trade-lot" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Risk (%)</label>
+                            <input type="number" step="0.1" id="trade-risk" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label>RR (Risk:Reward)</label>
+                            <input type="number" step="0.1" id="trade-rr" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Profit / Loss ($)</label>
+                            <input type="number" step="0.01" id="trade-profit" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Trading Session</label>
+                            <select id="trade-session" required>
+                                <option value="asia">Asia</option>
+                                <option value="london">London</option>
+                                <option value="newyork">New York</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Setup</label>
+                            <input type="text" id="trade-setup" placeholder="e.g. Breakout, Pullback...">
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Psychology Note</label>
+                        <textarea id="trade-psychology" rows="3" placeholder="How did you feel during this trade?"></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Reason Entry</label>
+                        <textarea id="trade-reason" rows="3" placeholder="Why did you enter this trade?"></textarea>
+                    </div>
+                    <!-- Screenshot Upload -->
+                    <div class="form-group full-width">
+                        <label>Screenshot</label>
+                        <div class="upload-area" id="upload-area">
+                            <div class="upload-placeholder" id="upload-placeholder">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drag & drop image here or click to upload</p>
+                                <span>Supports JPG, PNG, WEBP</span>
+                            </div>
+                            <div class="upload-preview" id="upload-preview" style="display:none;">
+                                <img id="preview-img" src="" alt="Preview">
+                                <button type="button" class="btn-remove-img" id="btn-remove-img">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <input type="file" id="trade-screenshot" accept="image/jpeg,image/png,image/webp" style="display:none;">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Trade
+                        </button>
+                        <button type="reset" class="btn btn-secondary" id="btn-reset-form">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: View Trade Detail -->
+    <div class="modal-overlay" id="modal-view">
+        <div class="modal modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-eye"></i> Trade Detail</h2>
+                <button class="modal-close" id="modal-view-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-view-body">
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
