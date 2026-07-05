@@ -419,7 +419,7 @@ const App = {
      */
     renderTradeTable() {
         const trades = this.getFilteredTrades();
-        const gallery = document.getElementById('trade-gallery');
+        const tbody = document.getElementById('trade-tbody');
         const emptyState = document.getElementById('table-empty');
 
         if (trades.length === 0) {
