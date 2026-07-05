@@ -418,61 +418,50 @@ const App = {
      * Render the trade table
      */
     renderTradeTable() {
-        const trades = this.getFilteredTrades();
-        const tbody = document.getElementById('trade-tbody');
-        const emptyState = document.getElementById('table-empty');
+    const trades = this.getFilteredTrades();
+    const tbody = document.getElementById('trade-tbody');
+    const emptyState = document.getElementById('table-empty');
 
-        if (trades.length === 0) {
-            gallery.innerHTML = '';
-            emptyState.style.display = 'block';
-            return;
-        }
-
-        emptyState.style.display = 'none';
-
-        gallery.innerHTML = trades.map(trade => `
-
-<div class="trade-card">
-
-    ${
-        trade.screenshot
-        ? `<img src="${trade.screenshot}" class="trade-image">`
-        : `<div class="trade-image"></div>`
+    if (trades.length === 0) {
+        tbody.innerHTML = '';
+        emptyState.style.display = 'block';
+        return;
     }
 
-    <div class="trade-content">
+    emptyState.style.display = 'none';
 
-        <div class="trade-top">
+    tbody.innerHTML = trades.map(trade => `
+        <tr>
+            <td>
+                ${
+                    trade.screenshot
+                    ? `<img src="${trade.screenshot}" class="table-screenshot">`
+                    : '-'
+                }
+            </td>
 
-            <h3>${trade.pair}</h3>
+            <td>${trade.pair}</td>
+            <td>${trade.date}</td>
+            <td>${trade.type}</td>
+            <td>${trade.entry}</td>
+            <td>${trade.exit}</td>
+            <td>${trade.rr || '-'}</td>
 
-            <span class="${trade.profit >= 0 ? 'win' : 'loss'}">
+            <td class="${trade.profit >= 0 ? 'profit' : 'loss'}">
+                ${trade.profit >= 0 ? '+' : ''}$${trade.profit.toFixed(2)}
+            </td>
 
-                ${trade.profit >= 0 ? 'WIN' : 'LOSS'}
+            <td>${trade.session || '-'}</td>
 
-            </span>
+            <td>
+                <button onclick="App.viewTrade('${trade.id}')">👁</button>
+                <button onclick="App.editTrade('${trade.id}')">✏️</button>
+                <button onclick="App.deleteTrade('${trade.id}')">🗑</button>
+            </td>
 
-        </div>
-
-        <div class="trade-profit">
-
-            ${trade.profit >= 0 ? '+' : '-'}$${Math.abs(trade.profit).toFixed(2)}
-
-        </div>
-
-        <div class="trade-bottom">
-
-            <span>${trade.date}</span>
-
-            <span>${trade.rr || '-'}R</span>
-
-        </div>
-
-    </div>
-
-</div>
-
-`).join("");
+        </tr>
+    `).join('');
+},
        
     },
 
