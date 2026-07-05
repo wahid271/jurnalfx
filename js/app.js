@@ -419,50 +419,61 @@ const App = {
      */
     renderTradeTable() {
         const trades = this.getFilteredTrades();
-        const tbody = document.getElementById('trade-tbody');
+        const gallery = document.getElementById('trade-gallery');
         const emptyState = document.getElementById('table-empty');
 
         if (trades.length === 0) {
-            tbody.innerHTML = '';
+            gallery.innerHTML = '';
             emptyState.style.display = 'block';
             return;
         }
 
         emptyState.style.display = 'none';
 
-        tbody.innerHTML = trades.map(trade => `
-            <tr>
-                <td>
-                    ${trade.screenshot
-                        ? `<img src="${trade.screenshot}" class="table-screenshot" alt="Screenshot" onclick="App.viewScreenshot('${trade.id}')">`
-                        : `<div class="table-screenshot" style="background:var(--border-color);display:flex;align-items:center;justify-content:center;"><i class="fas fa-image" style="color:var(--text-muted);font-size:0.8rem;"></i></div>`
-                    }
-                </td>
-                <td><strong>${trade.pair}</strong></td>
-                <td>${trade.date}</td>
-                <td><span class="table-type ${trade.type}">${trade.type}</span></td>
-                <td>${trade.entry}</td>
-                <td>${trade.exit}</td>
-                <td>${trade.rr || '-'}</td>
-                <td class="table-profit ${trade.profit >= 0 ? 'positive' : 'negative'}">
-                    ${trade.profit >= 0 ? '+' : ''}$${trade.profit.toFixed(2)}
-                </td>
-                <td>${trade.session || '-'}</td>
-                <td>
-                    <div class="table-actions">
-                        <button class="btn btn-sm btn-primary" onclick="App.viewTrade('${trade.id}')" title="View">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn btn-sm btn-secondary" onclick="App.editTrade('${trade.id}')" title="Edit">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="App.deleteTrade('${trade.id}')" title="Delete">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        `).join('');
+        gallery.innerHTML = trades.map(trade => `
+
+<div class="trade-card">
+
+    ${
+        trade.screenshot
+        ? `<img src="${trade.screenshot}" class="trade-image">`
+        : `<div class="trade-image"></div>`
+    }
+
+    <div class="trade-content">
+
+        <div class="trade-top">
+
+            <h3>${trade.pair}</h3>
+
+            <span class="${trade.profit >= 0 ? 'win' : 'loss'}">
+
+                ${trade.profit >= 0 ? 'WIN' : 'LOSS'}
+
+            </span>
+
+        </div>
+
+        <div class="trade-profit">
+
+            ${trade.profit >= 0 ? '+' : '-'}$${Math.abs(trade.profit).toFixed(2)}
+
+        </div>
+
+        <div class="trade-bottom">
+
+            <span>${trade.date}</span>
+
+            <span>${trade.rr || '-'}R</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+`).join("");
+       
     },
 
     /**
