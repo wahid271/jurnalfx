@@ -462,8 +462,6 @@ const App = {
         </tr>
     `).join('');
 },
-       
-    },
 
     /**
      * View trade details in modal
