@@ -419,50 +419,90 @@ const App = {
      */
     renderTradeTable() {
     const trades = this.getFilteredTrades();
-    const tbody = document.getElementById('trade-tbody');
-    const emptyState = document.getElementById('table-empty');
+    const gallery = document.getElementById("trade-gallery");
+    const emptyState = document.getElementById("table-empty");
+
+    if (!gallery) return;
 
     if (trades.length === 0) {
-        tbody.innerHTML = '';
-        emptyState.style.display = 'block';
+        gallery.innerHTML = "";
+        emptyState.style.display = "block";
         return;
     }
 
-    emptyState.style.display = 'none';
+    emptyState.style.display = "none";
 
-    tbody.innerHTML = trades.map(trade => `
-        <tr>
-            <td>
-                ${
-                    trade.screenshot
-                    ? `<img src="${trade.screenshot}" class="table-screenshot">`
-                    : '-'
-                }
-            </td>
+    gallery.innerHTML = trades.map(trade => `
+        <div class="trade-card">
 
-            <td>${trade.pair}</td>
-            <td>${trade.date}</td>
-            <td>${trade.type}</td>
-            <td>${trade.entry}</td>
-            <td>${trade.exit}</td>
-            <td>${trade.rr || '-'}</td>
+            ${
+                trade.screenshot
+                ? `<img src="${trade.screenshot}" class="trade-image" alt="${trade.pair}">`
+                : `
+                    <div class="trade-image no-image">
+                        <i class="fas fa-image"></i>
+                    </div>
+                `
+            }
 
-            <td class="${trade.profit >= 0 ? 'profit' : 'loss'}">
-                ${trade.profit >= 0 ? '+' : ''}$${trade.profit.toFixed(2)}
-            </td>
+            <div class="trade-content">
 
-            <td>${trade.session || '-'}</td>
+                <div class="trade-top">
+                    <h3>${trade.pair}</h3>
 
-            <td>
-                <button onclick="App.viewTrade('${trade.id}')">👁</button>
-                <button onclick="App.editTrade('${trade.id}')">✏️</button>
-                <button onclick="App.deleteTrade('${trade.id}')">🗑</button>
-            </td>
+                    <span class="${trade.profit >= 0 ? "win" : "loss"}">
 
-        </tr>
-    `).join('');
+                        ${trade.profit >= 0 ? "WIN" : "LOSS"}
+
+                    </span>
+                </div>
+
+                <div class="trade-profit">
+
+                    ${trade.profit >= 0 ? "+" : "-"}$${Math.abs(trade.profit).toFixed(2)}
+
+                </div>
+
+                <div class="trade-info">
+
+                    <p><strong>Date</strong> : ${trade.date}</p>
+
+                    <p><strong>RR</strong> : ${trade.rr || "-"}</p>
+
+                    <p><strong>Session</strong> : ${trade.session || "-"}</p>
+
+                </div>
+
+                <div class="trade-actions">
+
+                    <button class="btn btn-sm btn-primary"
+                        onclick="App.viewTrade('${trade.id}')">
+
+                        <i class="fas fa-eye"></i>
+
+                    </button>
+
+                    <button class="btn btn-sm btn-secondary"
+                        onclick="App.editTrade('${trade.id}')">
+
+                        <i class="fas fa-edit"></i>
+
+                    </button>
+
+                    <button class="btn btn-sm btn-danger"
+                        onclick="App.deleteTrade('${trade.id}')">
+
+                        <i class="fas fa-trash"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    `).join("");
 },
-
     /**
      * View trade details in modal
      * @param {string} id - Trade ID
